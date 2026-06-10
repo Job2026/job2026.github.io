@@ -3,280 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code & Cargo | Enterprise Universal ATS Parser</title>
+    <title>CODE & CARGO // SYSTEM GATEWAY PLATFORM</title>
     <style>
+        :root {
+            --bg-main: #030712;
+            --panel-bg: rgba(17, 24, 39, 0.7);
+            --border-glow: #30363d;
+            --neon-accent: #ffaa00;
+            --neon-green: #39ff14;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+        }
+
         body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 170, 0, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(57, 255, 20, 0.03) 0px, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.007) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.007) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
             margin: 0;
-            padding: 15px;
             display: flex;
+            align-items: center;
             justify-content: center;
-        }
-
-        .app-window {
-            width: 100%;
-            max-width: 600px;
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
             box-sizing: border-box;
         }
 
-        .app-header {
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 12px;
-            margin-bottom: 18px;
-        }
-
-        .title-text-main { font-weight: bold; color: #58a6ff; font-size: 14px; margin-bottom: 4px; }
-        .title-text-sub { font-size: 11px; color: #39ff14; font-family: monospace; }
-
-        .input-label { display: block; font-size: 12px; color: #8b949e; font-weight: bold; margin-bottom: 6px; margin-top: 14px;}
-        
-        input[type="text"], textarea {
+        .workspace-portal {
+            max-width: 900px;
             width: 100%;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #fff;
-            padding: 12px;
-            font-size: 13px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 40px;
             box-sizing: border-box;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        textarea { height: 130px; font-family: monospace; resize: none; }
-
-        .btn-container { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 18px; }
-        .btn { flex: 1; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; border: none; }
-        .btn-scan { background: #238636; color: #fff; }
-        .btn-clear { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
-
-        /* FIXED INTERFACE BOX - NO SLIPPING BOUNDARIES */
-        .console-output {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 16px;
-            display: none;
-            box-sizing: border-box;
+        .workspace-portal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-accent), var(--neon-green), transparent);
         }
 
-        .console-header {
+        .header-block {
+            text-align: left;
+            margin-bottom: 35px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0 0 8px 0;
+            background: linear-gradient(135deg, #ffffff 40%, var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .system-status-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
         }
 
-        .console-tag { font-family: monospace; font-size: 11px; color: #8b949e; }
-        
-        .badge {
-            font-family: monospace;
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--neon-green);
+        }
+
+        .pulse-dot {
+            width: 6px; height: 6px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 14px var(--neon-green); }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .grid-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .utility-card {
+            background: rgba(10, 15, 26, 0.6);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+
+        .utility-card:hover {
+            border-color: var(--neon-accent);
+            background: rgba(255, 170, 0, 0.02);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 1px var(--neon-accent);
+        }
+
+        .utility-card.secondary-node:hover {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.01);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 1px var(--neon-green);
+        }
+
+        .card-meta {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
             font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
+            font-weight: 700;
+            color: var(--neon-accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
         }
-        .badge-fail { background: rgba(255,51,51,0.15); color: #ff3333; border: 1px solid #ff3333; }
-        .badge-pass { background: rgba(57,255,20,0.15); color: #39ff14; border: 1px solid #39ff14; }
 
-        .feedback-box { font-family: monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; }
+        .utility-card.secondary-node .card-meta {
+            color: var(--neon-green);
+        }
 
-        .pro-trigger-box { display: none; margin-top: 15px; text-align: center; }
-        .btn-pro { background: #0056b3; color: white; border-radius: 6px; padding: 14px; width: 100%; font-weight: bold; cursor: pointer; border: none; display: block; box-sizing: border-box; text-decoration: none; font-size: 13px; }
-        
-        .keyword-badge-container { margin-top: 12px; display: none; background: rgba(88,166,255,0.1); padding: 10px; border-radius: 6px; border: 1px solid #30363d;}
-        .keyword-tag { background: #21262d; border: 1px solid #30363d; color: #58a6ff; padding: 3px 6px; border-radius: 4px; font-size: 11px; margin-right: 5px; display: inline-block; margin-top: 4px; font-family: monospace;}
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0 0 28px 0;
+        }
+
+        .action-trigger {
+            width: 100%;
+            background: #1f2937;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 13px;
+            letter-spacing: 0.2px;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .utility-card:hover .action-trigger {
+            background: var(--neon-accent);
+            color: #030712;
+            border-color: var(--neon-accent);
+            box-shadow: 0 4px 12px rgba(255, 170, 0, 0.2);
+        }
+
+        .utility-card.secondary-node:hover .action-trigger {
+            background: var(--neon-green);
+            color: #030712;
+            border-color: var(--neon-green);
+            box-shadow: 0 4px 12px rgba(57, 255, 20, 0.2);
+        }
     </style>
 </head>
 <body>
 
-<div class="app-window">
-    <div class="app-header">
-        <div class="title-text-main">CODE & CARGO // SYSTEM INTERFACE</div>
-        <div class="title-text-sub">>_ UNIVERSAL ATS GEOMETRY PARSER v2.0</div>
-    </div>
-
-    <label class="input-label">Target Profession / Job Title (Optional):</label>
-    <input type="text" id="jobTitleInput" placeholder="e.g., Software Engineer, Auditor">
-
-    <label class="input-label">Paste Resume Text Stream Directly Below:</label>
-    <textarea id="resumeContent" placeholder="Paste your plain text stream here to analyze structural geometry arrays..."></textarea>
-
-    <div class="btn-container">
-        <button class="btn btn-scan" onclick="executeUniversalAudit()">RUN AUTOMATED ATS GEOMETRY SCAN</button>
-        <button class="btn btn-clear" onclick="clearSystemBuffer()">CLEAR</button>
-    </div>
-
-    <!-- Fixed Console Terminal Box -->
-    <div class="console-output" id="consoleResult">
-        <div class="console-header">
-            <span class="console-tag">[ATS_ALGORITHMIC_METRICS]</span>
-            <span class="badge" id="statusBadge">PENDING</span>
-        </div>
-        <div class="feedback-box" id="structuralFeedback"></div>
-        
-        <!-- Keyword System Section Integrated Properly -->
-        <div class="keyword-badge-container" id="keywordDeficitArea">
-            <div style="font-size: 11px; color: #ff3333; font-weight: bold; margin-bottom: 4px;">⚠️ DETECTED CORE SKILL KEYWORD DEFICIT:</div>
-            <div id="missingKeywordsList"></div>
+<div class="workspace-portal">
+    <div class="header-block">
+        <h1>CODE & CARGO ENGINE HUB</h1>
+        <div class="system-status-row">
+            <span>SUITE LAYER: PHASE_1_CORE_ROUTING</span>
+            <div class="status-indicator">
+                <div class="pulse-dot"></div>
+                <span>ALL SYSTEMS OPERATIONAL</span>
+            </div>
         </div>
     </div>
+    
+    <div class="grid-matrix">
+        <!-- NODE 01: CV / RESUME WORKSPACE -->
+        <a href="resume-scanner.html" class="utility-card">
+            <div>
+                <div class="card-meta">VECTOR // 01</div>
+                <div class="card-title">Universal ATS Geometry Scanner</div>
+                <p class="card-desc">
+                    Scan file parsing serialization parameters against a real-time contextual token matrix. Isolate layout boundary deficit defects instantly with zero hardcoded tracking constraints.
+                </p>
+            </div>
+            <div class="action-trigger">Launch Scanner Console →</div>
+        </a>
 
-    <div class="pro-trigger-box" id="proTrigger">
-        <button class="btn-pro" onclick="navigateToProOptimizer()">DOWNLOAD BOT-PROOF RESUME CONFIGURATION</button>
+        <!-- NODE 02: CORPORATE AUTOMATION SYSTEM -->
+        <a href="report-automator.html" class="utility-card secondary-node">
+            <div>
+                <div class="card-meta">VECTOR // 02</div>
+                <div class="card-title">Corporate Report Automation Engine</div>
+                <p class="card-desc">
+                    Compress an 8-hour spreadsheet data entry cycle into a single click. Run advanced client-side WebAssembly Python pipeline compilers directly inside your web browser container.
+                </p>
+            </div>
+            <div class="action-trigger">Initialize WebAssembly Engine →</div>
+        </a>
     </div>
 </div>
-
-<script>
-function executeUniversalAudit() {
-    // 1. Initialize Clean Sinks for Input Streams and UI Panels
-    const resumeRaw = document.getElementById("resumeContent")?.value;
-    const jobDescriptionRaw = document.getElementById("jobTitleInput")?.value;
-    
-    const consoleResult = document.getElementById("consoleResult");
-    const feedbackBox = document.getElementById("structuralFeedback");
-    const missingKeywordsList = document.getElementById("missingKeywordsList");
-    const keywordDeficitArea = document.getElementById("keywordDeficitArea");
-    const metricBadge = document.querySelector(".status-badge") || document.getElementById("malfunctionBadge");
-
-    if (!resumeRaw || !resumeRaw.trim() || !jobDescriptionRaw || !jobDescriptionRaw.trim()) {
-        alert("Execution Halted: Both your Resume Text and the Target Job Description must be populated to perform a multi-factor audit.");
-        return;
-    }
-
-    // Unveil result workspace console immediately
-    consoleResult.style.display = "block";
-
-    // 2. TIER 1 SERIALIZATION & READING-ORDER VALIDATION (REAL REASONING)
-    const textLines = resumeRaw.split(/\r?\n/).filter(line => line.trim().length > 0);
-    let structuralAnomaliesCount = 0;
-    
-    textLines.forEach(line => {
-        // Track complex layout characters that signal unparseable tables or columns
-        const hasHardGridDividers = /[║│█─┼╚═╗🗂✥✥]/.test(line);
-        // Count pipe separators to distinguish simple tags from parallel text grids
-        const pipeDividersCount = (line.match(/\|/g) || []).length;
-        // Scan for multi-column indicator spacing patterns (4 or more spaces used as artificial columns)
-        const hasColumnFakeStops = / {4,}/.test(line);
-
-        if (hasHardGridDividers || pipeDividersCount > 1 || hasColumnFakeStops) {
-            structuralAnomaliesCount++;
-        }
-    });
-
-    // Calculate real structural structural grid density across the lines array
-    const calculatedGridDensity = textLines.length > 0 ? Math.round((structuralAnomaliesCount / textLines.length) * 100) : 0;
-    
-    // Fail threshold triggers if over 15% of the page exhibits multi-column traits
-    const fileLayoutIsCorrupted = calculatedGridDensity >= 15;
-
-    // 3. MULTI-FACTOR TECHNICAL TOKEN EXTRACTION (ZERO HARDCODING)
-    const cleanResume = resumeRaw.toLowerCase();
-    const cleanJobDesc = jobDescriptionRaw.toLowerCase().replace(/[\t\n\r]+/g, " ").replace(/\s+/g, " ");
-
-    // Enterprise Stop-Words Array to discard useless conversational noise
-    const stopWords = new Set([
-        "and", "the", "for", "with", "this", "that", "from", "your", "will", "have", "with", "from",
-        "their", "about", "which", "shall", "should", "could", "would", "must", "they", "them", "these",
-        "work", "team", "role", "experience", "skills", "job", "company", "business", "support", "working",
-        "required", "preferred", "successful", "candidate", "position", "responsibilities", "requirements",
-        "ability", "knowledge", "years", "strong", "excellent", "written", "verbal", "communication", "management"
-    ]);
-
-    // Tokenize full job text payload into alpha-numeric terms
-    const jobWordsWords = cleanJobDesc.replace(/[^a-zA-Z0-9\s]/g, " ").split(/\s+/);
-    const textFrequencyMap = {};
-
-    jobWordsWords.forEach(word => {
-        if (word.length > 2 && isNaN(word) && !stopWords.has(word)) {
-            textFrequencyMap[word] = (textFrequencyMap[word] || 0) + 1;
-        }
-    });
-
-    // Dynamically isolate the top 6 heaviest required technical terms in the text
-    const extractedKeywords = Object.keys(textFrequencyMap)
-        .sort((a, b) => textFrequencyMap[b] - textFrequencyMap[a])
-        .slice(0, 6);
-
-    // Fallback block if job spec text is structurally too small
-    if (extractedKeywords.length === 0) {
-        extractedKeywords.push("operations", "data", "systems", "execution", "strategy");
-    }
-
-    // 4. CROSS-REFERENCE KEYWORD MATRICES USING BOUNDARY REGEX LOGIC
-    let missingSkillsArray = [];
-    missingKeywordsList.innerHTML = "";
-
-    extractedKeywords.forEach(kw => {
-        const escapedKw = kw.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        const regexBoundary = new RegExp(`\\b${escapedKw}\\w*\\b`, 'i'); // Captures word variations
-        
-        if (!regexBoundary.test(cleanResume)) {
-            missingSkillsArray.push(kw);
-            // Append clean, professional UI error tags (Completely wiped out '开口' bug!)
-            missingKeywordsList.innerHTML += `<span class="keyword-tag" style="display:inline-block; margin:3px; padding:6px 10px; background:rgba(248,81,73,0.12); border:1px solid #f85149; color:#f85149; border-radius:4px; font-size:11px; font-family:monospace; font-weight:bold;">✗ ${kw.toUpperCase()}</span> `;
-        }
-    });
-
-    // 5. --- GENERATE MATHEMATICAL INTELLIGENCE VERDICT (ZERO PRESET REJECTS) ---
-    let outputHTML = "";
-    
-    if (fileLayoutIsCorrupted) {
-        if (metricBadge) { 
-            metricBadge.innerText = "MALFUNCTION"; 
-            metricBadge.style.background = "#ff3333"; 
-            metricBadge.style.color = "#ffffff"; 
-        }
-        outputHTML = `<h3 style="color: #ff3333; margin-top:0; font-family: sans-serif;">✕ Layout Serialization Deficit Detected:</h3>
-        <p style="color: #c9d1d9; line-height:1.6; font-family: sans-serif;">Our multi-factor parser identified active structural alignment anomalies across your text stream layout (${calculatedGridDensity}% horizontal design density).</p>
-        <p style="color: #8b949e; font-size:13px; font-family: monospace;">[DIAGNOSTIC]: Tabular frameworks and side-by-side text columns scramble paragraph data layers during corporate machine indexing sequences.</p>`;
-    } else {
-        if (metricBadge) { 
-            metricBadge.innerText = "COMPLIANT"; 
-            metricBadge.style.background = "#39ff14"; 
-            metricBadge.style.color = "#000000"; 
-        }
-        outputHTML = `<h3 style="color: #39ff14; margin-top:0; font-family: sans-serif;">✓ Linear Grid Geometry Confirmed:</h3>
-        <p style="color: #c9d1d9; line-height:1.6; font-family: sans-serif;">Structure validation successful! Your file text stream parses cleanly down a single vertical vector sequence. Zero unparseable table constraints or multi-column data barriers were detected.</p>
-        
-        <!-- HIGH-CONVERSION CONVERSION BRIDGE PANEL BUTTON -->
-        <div style="margin-top: 20px; padding: 15px; background: rgba(255, 170, 0, 0.05); border: 1px dashed #ffaa00; border-radius: 6px; text-align: center;">
-            <p style="color: #ffaa00; font-size: 13px; margin-top: 0; font-family: monospace;">[DOCKING SIGNAL ACTIVE]: SECURE PROTOCOL UNLOCKED</p>
-            <a href="pro-optimizer.html" style="display: inline-block; padding: 12px 24px; background: #ffaa00; color: #000000; text-decoration: none; font-weight: bold; border-radius: 4px; font-family: sans-serif; font-size: 13px; letter-spacing: 0.5px; transition: transform 0.2s;">PROCEED TO PRO-OPTIMIZER HUB FOR EXPORT ➡️</a>
-        </div>`;
-    }
-
-    // Render dynamic payload directly into the screen workspace container
-    feedbackBox.innerHTML = outputHTML;
-
-    // 6. Handle Missing Tracking Matrix Badges
-    if (missingSkillsArray.length > 0) {
-        keywordDeficitArea.style.display = "block";
-    } else {
-        keywordDeficitArea.style.display = "none";
-    }
-}
-
-
-function clearSystemBuffer() {
-    document.getElementById("jobTitleInput").value = "";
-    document.getElementById("resumeContent").value = "";
-    document.getElementById("consoleResult").style.display = "none";
-    document.getElementById("proTrigger").style.display = "none";
-
-}
-
-function navigateToProOptimizer() {
-    window.location.href = "pro-optimizer.html";
-}
-</script>
 
 </body>
 </html>
