@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE & CARGO // TIER 3 REPORT AUTOMATION ENGINE</title>
+    <!-- Load Official Web Assembly Pyodide Interpreter Node -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; padding: 20px; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; background: #161b22; border: 1px solid #30363d; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        h2 { color: #58a6ff; margin-top: 0; font-size: 20px; border-bottom: 1px solid #30363d; padding-bottom: 10px; font-weight: 600; letter-spacing: 0.5px; }
+        textarea { width: 100%; height: 140px; background: #0d1117; color: #39ff14; border: 1px solid #30363d; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; box-sizing: border-box; resize: vertical; }
+        .btn-group { margin-top: 15px; display: flex; gap: 10px; }
+        .btn-primary { background: #ffaa00; color: #000000; border: none; padding: 12px 24px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px; letter-spacing: 0.5px; flex: 2; transition: opacity 0.2s; }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+        .console-box { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 15px; height: 120px; overflow-y: auto; font-family: monospace; font-size: 12px; color: #8b949e; line-height: 1.6; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>💻 TIER 3 ENGINE // AUTOMATED CORPORATE DATA COMPILER</h2>
+    <p style="font-size: 13px; color: #8b949e; margin-top: 0; line-height: 1.5;">
+        Input raw transactional strings, CSV logs, or warehouse allocation records below. Our client-side virtual matrix executes pure Python pipeline calculations instantly to structure your executive summary file.
+    </p>
+    
+    <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 8px; color: #8b949e;">PASTE TRANSACTUAL DATA ARRAY OR LOG ENTRIES HERE:</label>
+    <textarea id="csvDataInput" placeholder="tracking_id,sector,units,cost_per_unit,flag_indicator&#10;X-NODE-101,AE_DUBAI,1500,12.50,synchronized&#10;X-NODE-202,EU_ROTT,850,45.00,system_anomaly"></textarea>
+    
+    <div class="btn-group">
+        <button id="runBtn" class="btn-primary" onclick="compileReportWithPython()" disabled>INITIALIZING ENVIRONMENT INTERPRETER...</button>
+    </div>
+    
+    <div class="console-box" id="terminalLogs">[SYSTEM] Booting low-level compiler nodes via CDN streams...</div>
+</div>
+
+<script>
+let pyodideInstance = null;
+
+// Initialize the WebAssembly Python environment instantly on page load
+async function initPyodideEngine() {
+    const logBox = document.getElementById("terminalLogs");
+    try {
+        pyodideInstance = await loadPyodide();
+        logBox.innerHTML = `<span style="color: #58a6ff;">[SYSTEM]</span> WebAssembly execution array mapped successfully.<br>`;
+        logBox.innerHTML += `<span style="color: #39ff14;">[STATUS]</span> Python environment fully armed. Ready for dynamic report compilation.`;
+        
+        const runButton = document.getElementById("runBtn");
+        runButton.innerText = "🚀 RUN AUTOMATED RESTRUCTURING COMPILATION";
+        runButton.disabled = false;
+    } catch (err) {
+        logBox.innerHTML = `<span style="color: #ff3333;">[FATAL]</span> Server injection blocked by connection restrictions: ${err}`;
+    }
+}
+initPyodideEngine();
+
+async function compileReportWithPython() {
+    const rawDataInput = document.getElementById("csvDataInput").value.trim();
+    const logBox = document.getElementById("terminalLogs");
+    
+    if (!rawDataInput) {
+        alert("Input stream empty. Paste your source data logs.");
+        return;
+    }
+
+    const timestamp = new Date().toLocaleTimeString();
+    logBox.innerHTML = `<span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #ffaa00;">[EXECUTION]</span> Passing dataset matrices directly into internal Python modules...`;
+
+    try {
+        // Parse user text into a safe JavaScript array object to convert into Python globals
+        const lines = rawDataInput.split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+        const dataRows = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            const values = lines[i].split(',').map(v => v.trim());
+            const rowObj = {};
+            headers.forEach((header, idx) => {
+                rowObj[header] = values[idx] || "";
+            });
+            dataRows.push(rowObj);
+        }
+
+        // Expose our structured dataset straight to the Pyodide runtime core memory stack
+        pyodideInstance.globals.set("js_data_payload", JSON.stringify(dataRows));
+
+        // The exact, verified Python analysis script running fully inside the browser engine
+        const pythonScriptSource = `
+import json
+from datetime import datetime
+
+raw_rows = json.loads(js_data_payload)
+aggregated_volume = 0
+gross_financial_load = 0
+detected_anomalies = []
+sector_frequency = {}
+
+for row in raw_rows:
+    try:
+        units = int(row.get("units", 0))
+        cost = float(row.get("cost_per_unit", 0.0))
+        sector = str(row.get("sector", "UNMAPPED_NODE")).strip().upper()
+        state_flag = str(row.get("flag_indicator", "undefined")).strip().lower()
+
+        aggregated_volume += units
+        gross_financial_load += (units * cost)
+        sector_frequency[sector] = sector_frequency.get(sector, 0) + units
+
+        if state_flag in ["system_anomaly", "pending_clearance", "flagged_anomaly"]:
+            detected_anomalies.append(f"  ❌ ID: {row.get('tracking_id', 'UNKNOWN')} // State: {state_flag.upper()}")
+    except:
+        continue
+
+mean_unit_cost = gross_financial_load / aggregated_volume if aggregated_volume > 0 else 0.0
+
+manifest_output = f"=====================================================================\\n"
+manifest_output += f"SOVEREIGN DATA CORE // AUTOMATED DAILY TELEMETRY REPORT\\n"
+manifest_output += f"GENERATED AT: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} // LAYER: TIER 3 WEB ASSEMBLY\\n"
+manifest_output += f"=====================================================================\\n\\n"
+manifest_output += f"[QUANTITATIVE OPERATIONAL MATRIX]:\\n"
+manifest_output += f"  ↳ Total Material Volume : {aggregated_volume:,} Units\\n"
+manifest_output += f"  ↳ Gross Operational Financial Load : \${gross_financial_load:,.2f} USD\\n"
+manifest_output += f"  ↳ Dynamically Indexed Mean Valuation: \${mean_unit_cost:.2f} USD/Unit\\n\\n"
+
+manifest_output += f"[NODE DISTRIBUTION DISTRIBUTION ROUTING]:\\n"
+for geographical_sector, unit_load in sector_frequency.items():
+    manifest_output += f"  • Target Array -> [{geographical_sector}] : {unit_load:,} Units Registered\\n"
+
+manifest_output += f"\\n[CRITICAL DEVIATION EXCEPTION MATRIX]:\\n"
+if detected_anomalies:
+    for exception in detected_anomalies:
+        manifest_output += f"{exception}\\n"
+else:
+    manifest_output += f"  ✓ Zero data discrepancies verified across active pipelines.\\n"
+manifest_output += f"\\n=====================================================================\\n"
+
+# Pass return layout back to Javascript console layer
+manifest_output
+`;
+
+        // Execute python source compiler and extract resulting payload layout string
+        const compiledReportText = await pyodideInstance.runPythonAsync(pythonScriptSource);
+
+        // --- AUTOMATIC FILE DOWNLINK DISPATCH MATRIX ---
+        const fileBlob = new Blob([compiledReportText], { type: "text/plain;charset=utf-8" });
+        const temporaryLink = document.createElement("a");
+        temporaryLink.href = URL.createObjectURL(fileBlob);
+        temporaryLink.download = `automated_corporate_report_${Date.now()}.txt`;
+        document.body.appendChild(temporaryLink);
+        temporaryLink.click();
+        document.body.removeChild(temporaryLink);
+
+        const completeTime = new Date().toLocaleTimeString();
+        logBox.innerHTML += `<br><span style="color: #39ff14;">[${completeTime}] [SUCCESS]</span> Python logic processing successful. Physical .txt file exported directly to client storage.`;
+
+    } catch (pythonError) {
+        logBox.innerHTML += `<br><span style="color: #ff3333;">[FATAL ERROR]</span> Python runtime crash sequence triggered: ${pythonError}`;
+    }
+}
+</script>
+
+</body>
+</html>
