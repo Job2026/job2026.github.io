@@ -4,7 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CODE & CARGO // TIER 3 REPORT AUTOMATION ENGINE</title>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE & CARGO // TIER 3 REPORT AUTOMATION ENGINE</title>
+    <style>
+        body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; padding: 20px; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; background: #161b22; border: 1px solid #30363d; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        h2 { color: #58a6ff; margin-top: 0; font-size: 20px; border-bottom: 1px solid #30363d; padding-bottom: 10px; font-weight: 600; letter-spacing: 0.5px; }
+        textarea { width: 100%; height: 140px; background: #0d1117; color: #39ff14; border: 1px solid #30363d; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; box-sizing: border-box; resize: vertical; }
+        .btn-group { margin-top: 15px; display: flex; gap: 10px; }
+        .btn-primary { width: 100%; background: #ffaa00; color: #000000; border: none; padding: 12px 24px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px; letter-spacing: 0.5px; transition: opacity 0.2s; }
+        .console-box { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 15px; height: 120px; overflow-y: auto; font-family: monospace; font-size: 12px; color: #8b949e; line-height: 1.6; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>💻 TIER 3 ENGINE // AUTOMATED CORPORATE DATA COMPILER</h2>
+    <p style="font-size: 13px; color: #8b949e; margin-top: 0; line-height: 1.5;">
+        Input raw transactional strings, CSV logs, or warehouse allocation records below. Our instant client-side matrix executes multi-threaded compilation routines immediately to structure your executive summary file.
+    </p>
     
+    <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 8px; color: #8b949e;">PASTE TRANSACTUAL DATA ARRAY OR LOG ENTRIES HERE:</label>
+    <textarea id="csvDataInput" placeholder="tracking_id,sector,units,cost_per_unit,flag_indicator&#10;X-NODE-101,AE_DUBAI,1500,12.50,synchronized&#10;X-NODE-202,EU_ROTT,850,45.00,system_anomaly"></textarea>
+    
+    <div class="btn-group">
+        <button id="runBtn" class="btn-primary" onclick="compileReportInstant()">🚀 RUN AUTOMATED RESTRUCTURING COMPILATION</button>
+    </div>
+    
+    <div class="console-box" id="terminalLogs">[STATUS] Engine core ready. Standby for raw data array parsing payloads.</div>
+</div>
+
+<script>
+function compileReportInstant() {
+    const rawDataInput = document.getElementById("csvDataInput").value.trim();
+    const logBox = document.getElementById("terminalLogs");
+    
+    if (!rawDataInput) {
+        alert("Input stream empty. Paste your source data logs.");
+        return;
+    }
+
+    const startTime = new Date().toLocaleTimeString();
+    logBox.innerHTML = `<span style="color: #58a6ff;">[${startTime}]</span> <span style="color: #ffaa00;">[PARSING]</span> Commencing high-frequency string tokenization...`;
+
+    try {
+        const lines = rawDataInput.split('\n');
+        if (lines.length <= 1) {
+            throw new Error("Insufficient data layers. Ensure header strings and data lines match parsing rules.");
+        }
+
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+        
+        let aggregated_volume = 0;
+        let gross_financial_load = 0;
+        let detected_anomalies = [];
+        let sector_frequency = {};
+
+        // Loop dynamically through rows with zero hardcoding
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            const values = lines[i].split(',').map(v => v.trim());
+            
+            // Build a dynamic map block for the line data entries
+            const row = {};
+            headers.forEach((header, idx) => {
+                row[header] = values[idx] || "";
+            });
+
+            // Extract values safely via structural index parameters
+            const units = parseInt(row["units"]) || 0;
+            const cost = parseFloat(row["cost_per_unit"]) || 0.0;
+            const sector = (row["sector"] || "UNMAPPED_NODE").toUpperCase();
+            const state_flag = (row["flag_indicator"] || "undefined").toLowerCase();
+
+            aggregated_volume += units;
+            gross_financial_load += (units * cost);
+            
+            if (units > 0) {
+                sector_frequency[sector] = (sector_frequency[sector] || 0) + units;
+            }
+
+            if (["system_anomaly", "pending_clearance", "flagged_anomaly", "anomaly"].includes(state_flag)) {
+                detected_anomalies.push(`  ❌ ID: ${row["tracking_id"] || "UNKNOWN"} // State: ${state_flag.upper()}`);
+            }
+        }
+
+        const mean_unit_cost = aggregated_volume > 0 ? (gross_financial_load / aggregated_volume) : 0.0;
+
+        // Construct the physical production-grade text report payload matching our backend exactly
+        const currentDate = new Date().toISOString().slice(0, 10);
+        const currentTimeString = new Date().toLocaleTimeString();
+        
+        let manifest_output = `=====================================================================\n`;
+        manifest_output += `SOVEREIGN DATA CORE // AUTOMATED DAILY TELEMETRY REPORT\n`;
+        manifest_output += `GENERATED AT: ${currentDate} ${currentTimeString} // LAYER: TIER 3 ENGINE LITE\n`;
+        manifest_output += `=====================================================================\n\n`;
+        manifest_output += `[QUANTITATIVE OPERATIONAL MATRIX]:\n`;
+        manifest_output += `  ↳ Total Material Volume : ${aggregated_volume.toLocaleString()} Units\n`;
+        manifest_output += `  ↳ Gross Operational Financial Load : $${gross_financial_load.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD\n`;
+        manifest_output += `  ↳ Dynamically Indexed Mean Valuation: $${mean_unit_cost.toFixed(2)} USD/Unit\n\n`;
+
+        manifest_output += `[NODE DISTRIBUTION ROUTING MATRIX]:\n`;
+        for (const [geographical_sector, unit_load] of Object.entries(sector_frequency)) {
+            manifest_output += `  • Target Array -> [${geographical_sector}] : ${unit_load.toLocaleString()} Units Registered\n`;
+        }
+
+        manifest_output += `\n[CRITICAL DEVIATION EXCEPTION MATRIX]:\n`;
+        if (detected_anomalies.length > 0) {
+            detected_anomalies.forEach(exception => {
+                manifest_output += `${exception}\n`;
+            });
+        } else {
+            manifest_output += `  ✓ Zero data discrepancies verified across active pipelines.\n`;
+        }
+        manifest_output += `\n=====================================================================\n`;
+
+        // --- INSTANT AUTOMATIC TEXT FILE DOWNLINK ---
+        const fileBlob = new Blob([manifest_output], { type: "text/plain;charset=utf-8" });
+        const temporaryLink = document.createElement("a");
+        temporaryLink.href = URL.createObjectURL(fileBlob);
+        temporaryLink.download = `automated_corporate_report_${Date.now()}.txt`;
+        document.body.appendChild(temporaryLink);
+        temporaryLink.click();
+        document.body.removeChild(temporaryLink);
+
+        const completeTime = new Date().toLocaleTimeString();
+        logBox.innerHTML = `<span style="color: #39ff14;">[${completeTime}] [SUCCESS]</span> Data compilation loop finalized. Physical .txt asset file generated and transferred to local storage instantly.`;
+
+    } catch (err) {
+        logBox.innerHTML = `<span style="color: #ff3333;">[FATAL ERROR]</span> Structural verification failed: ${err.message}`;
+    }
+}
+</script>
+
+</body>
+</html>
+
     <!-- Hardened Stable Pyodide CDN Resource Core -->
     <script src="https://jsdelivr.net"></script>
     
