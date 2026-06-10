@@ -3,242 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CODE & CARGO // SYSTEM GATEWAY PLATFORM</title>
+    <title>CODE & CARGO // INSTITUTIONAL AUTOMATION MATRIX</title>
     <style>
         :root {
-            --bg-main: #030712;
-            --panel-bg: rgba(17, 24, 39, 0.7);
-            --border-glow: #30363d;
-            --neon-accent: #ffaa00;
-            --neon-green: #39ff14;
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
+            --bg-terminal: #080c10;
+            --panel-border: #1f293d;
+            --amber-glow: #ffaa00;
+            --cyber-green: #00ff66;
+            --cyan-data: #00e5ff;
+            --text-muted: #6272a4;
+            --text-bright: #f8f8f2;
         }
 
         body {
-            background-color: var(--bg-main);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(255, 170, 0, 0.05) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(57, 255, 20, 0.03) 0px, transparent 50%),
-                linear-gradient(rgba(255,255,255,0.007) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.007) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            min-height: 100vh;
+            background-color: var(--bg-terminal);
+            background-image: linear-gradient(rgba(255,255,255,0.003) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.003) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-bright);
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Monaco, Courier, monospace;
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .workspace-portal {
-            max-width: 900px;
-            width: 100%;
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 40px;
-            box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255,255,255,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .workspace-portal::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-accent), var(--neon-green), transparent);
-        }
-
-        .header-block {
-            text-align: left;
-            margin-bottom: 35px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 25px;
-        }
-
-        h1 {
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin: 0 0 8px 0;
-            background: linear-gradient(135deg, #ffffff 40%, var(--text-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .system-status-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            font-size: 11px;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--neon-green);
-        }
-
-        .pulse-dot {
-            width: 6px; height: 6px;
-            background-color: var(--neon-green);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--neon-green);
-            animation: pulse 1.8s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.6; }
-            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 14px var(--neon-green); }
-            100% { transform: scale(0.9); opacity: 0.6; }
-        }
-
-        .grid-matrix {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-        }
-
-        .utility-card {
-            background: rgba(10, 15, 26, 0.6);
-            border: 1px solid var(--border-glow);
-            border-radius: 12px;
-            padding: 30px;
-            box-sizing: border-box;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+            padding: 15px;
+        }
+
+        .terminal-wrapper {
+            max-width: 1100px;
+            width: 100%;
+            margin: auto;
+            background: rgba(13, 20, 30, 0.85);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+            overflow: hidden;
+        }
+
+        .terminal-header-bar {
+            background: #111827;
+            border-bottom: 1px solid var(--panel-border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .system-ticker-title {
+            color: #ffffff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ticker-dot {
+            width: 7px; height: 7px;
+            background-color: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--cyber-green);
+        }
+
+        .main-workspace-grid {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .terminal-node-card {
+            border: 1px solid var(--panel-border);
+            background: #090d16;
+            padding: 22px;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
             color: inherit;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .utility-card:hover {
-            border-color: var(--neon-accent);
-            background: rgba(255, 170, 0, 0.02);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 1px var(--neon-accent);
+        .terminal-node-card:hover {
+            border-color: var(--amber-glow);
+            background: rgba(255, 170, 0, 0.01);
+            box-shadow: inset 0 0 15px rgba(255,170,0,0.03), 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        .utility-card.secondary-node:hover {
-            border-color: var(--neon-green);
-            background: rgba(57, 255, 20, 0.01);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 1px var(--neon-green);
+        .terminal-node-card.green-vector:hover {
+            border-color: var(--cyber-green);
+            background: rgba(0, 255, 102, 0.01);
+            box-shadow: inset 0 0 15px rgba(0,255,102,0.03), 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        .card-meta {
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        .node-telemetry-header {
             font-size: 10px;
-            font-weight: 700;
-            color: var(--neon-accent);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed var(--panel-border);
+            padding-bottom: 8px;
         }
 
-        .utility-card.secondary-node .card-meta {
-            color: var(--neon-green);
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 0 0 12px 0;
+        .node-label {
+            font-size: 16px;
+            font-weight: bold;
             color: #ffffff;
+            margin: 0 0 10px 0;
             letter-spacing: -0.3px;
         }
 
-        .card-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
+        .node-summary-text {
+            font-size: 12px;
+            color: #a0aec0;
             line-height: 1.6;
-            margin: 0 0 28px 0;
+            margin: 0 0 24px 0;
+            font-family: sans-serif;
         }
 
-        .action-trigger {
+        .terminal-action-prompt {
             width: 100%;
-            background: #1f2937;
-            color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.05);
-            font-weight: 600;
-            padding: 12px;
-            border-radius: 6px;
+            background: #111827;
+            border: 1px solid var(--panel-border);
+            color: var(--amber-glow);
             text-align: center;
-            font-size: 13px;
-            letter-spacing: 0.2px;
+            padding: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
             transition: all 0.2s;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
 
-        .utility-card:hover .action-trigger {
-            background: var(--neon-accent);
-            color: #030712;
-            border-color: var(--neon-accent);
-            box-shadow: 0 4px 12px rgba(255, 170, 0, 0.2);
+        .terminal-node-card:hover .terminal-action-prompt {
+            background: var(--amber-glow);
+            color: #080c10;
+            border-color: var(--amber-glow);
         }
 
-        .utility-card.secondary-node:hover .action-trigger {
-            background: var(--neon-green);
-            color: #030712;
-            border-color: var(--neon-green);
-            box-shadow: 0 4px 12px rgba(57, 255, 20, 0.2);
+        .terminal-node-card.green-vector:hover .terminal-action-prompt {
+            background: var(--cyber-green);
+            color: #080c10;
+            border-color: var(--cyber-green);
+        }
+
+        .global-ticker-footer {
+            background: #090d16;
+            border-top: 1px solid var(--panel-border);
+            padding: 10px 20px;
+            font-size: 11px;
+            color: var(--cyan-data);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-scroll-wrap {
+            display: inline-block;
+            animation: scrollTicker 25s linear infinite;
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-33.33%, 0, 0); }
         }
     </style>
 </head>
 <body>
 
-<div class="workspace-portal">
-    <div class="header-block">
-        <h1>CODE & CARGO ENGINE HUB</h1>
-        <div class="system-status-row">
-            <span>SUITE LAYER: PHASE_1_CORE_ROUTING</span>
-            <div class="status-indicator">
-                <div class="pulse-dot"></div>
-                <span>ALL SYSTEMS OPERATIONAL</span>
-            </div>
+<div class="terminal-wrapper">
+    <div class="terminal-header-bar">
+        <div class="system-ticker-title">
+            <div class="ticker-dot"></div>
+            <span>CODE & CARGO LOGISTICS TERMINAL v3.00</span>
         </div>
+        <span>SYS_LOC: ASIA_DUBAI_NODE // PORT: ACTIVE</span>
     </div>
     
-    <div class="grid-matrix">
-        <!-- NODE 01: CV / RESUME WORKSPACE -->
-        <a href="resume-scanner.html" class="utility-card">
+    <div class="main-workspace-grid">
+        <!-- VECTOR 01: CV SCANNER -->
+        <a href="resume-scanner.html" class="terminal-node-card">
             <div>
-                <div class="card-meta">VECTOR // 01</div>
-                <div class="card-title">Universal ATS Geometry Scanner</div>
-                <p class="card-desc">
-                    Scan file parsing serialization parameters against a real-time contextual token matrix. Isolate layout boundary deficit defects instantly with zero hardcoded tracking constraints.
+                <div class="node-telemetry-header">
+                    <span>TRACK: ACCELERATOR_NODE</span>
+                    <span style="color: var(--amber-glow);">IDX_01</span>
+                </div>
+                <div class="node-label">> CC.RESUME_VALIDATOR</div>
+                <p class="node-summary-text">
+                    Execute low-level string tokenization across candidate profile layouts. Analyze sequence geometries and cross-reference structural keyword weights with zero hardcoded parameters.
                 </p>
             </div>
-            <div class="action-trigger">Launch Scanner Console →</div>
+            <div class="terminal-action-prompt">[ EXECUTE RESUME GEOMETRY SCAN ]</div>
         </a>
 
-        <!-- NODE 02: CORPORATE AUTOMATION SYSTEM -->
-        <a href="report-automator.html" class="utility-card secondary-node">
+        <!-- VECTOR 02: REPORT GENERATOR -->
+        <a href="report-automator.html" class="terminal-node-card green-vector">
             <div>
-                <div class="card-meta">VECTOR // 02</div>
-                <div class="card-title">Corporate Report Automation Engine</div>
-                <p class="card-desc">
-                    Compress an 8-hour spreadsheet data entry cycle into a single click. Run advanced client-side WebAssembly Python pipeline compilers directly inside your web browser container.
+                <div class="node-telemetry-header">
+                    <span>TRACK: INCOME_AUTOMATOR</span>
+                    <span style="color: var(--cyber-green);">IDX_02</span>
+                </div>
+                <div class="node-label">> CC.REPORT_COMPILER</div>
+                <p class="node-summary-text">
+                    Decouple administrative data entry latency completely. Inject raw logistical spreadsheet streams directly into an isolated client-side WebAssembly Python processing container.
                 </p>
             </div>
-            <div class="action-trigger">Initialize WebAssembly Engine →</div>
+            <div class="terminal-action-prompt">[ INITIALIZE WASM PYTHON AUTOMATION ]</div>
         </a>
+    </div>
+    
+    <!-- Institutional Live Running Ticker Strip -->
+    <div class="global-ticker-footer">
+        <div class="ticker-scroll-wrap">
+            <span>• SYS_STATUS: STACK_LOAD_OK (0.001s) • DUBAI_HUB: ACTIVE [VOLUME: 489,120] • COMPLIANCE_SCORE: 100% • REPO_STATUS: LIVE_BRANCH_SYNCED • DATA_MATRIX: PYODIDE_LOAD_OK • SYS_STATUS: STACK_LOAD_OK (0.001s) • DUBAI_HUB: ACTIVE [VOLUME: 489,120] • COMPLIANCE_SCORE: 100% • REPO_STATUS: LIVE_BRANCH_SYNCED • DATA_MATRIX: PYODIDE_LOAD_OK • </span>
+        </div>
     </div>
 </div>
 
